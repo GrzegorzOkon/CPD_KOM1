@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+}
+
+group 'CPD_KOM1'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile files('C:\\Users\\grzeg\\IdeaProjects\\CPD_KOM1\\lib\\jconn4.jar')
+    compile group: 'org.w3c', name: 'dom', version: '2.3.0-jaxb-1.0.6'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+sourceSets {
+    main {
+        java.srcDirs = ['src\\main\\java']
+    }
+
+    test {
+        java.srcDirs = ['src\\test']
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'okon.CPD_KOM1App'
+    }
+    doFirst {
+        from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
+    }
+}
