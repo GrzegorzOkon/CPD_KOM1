@@ -55,74 +55,25 @@ public class CPD_KOM1App {
 
     public void save(String fileName, List<Message> content) {
         try (FileOutputStream out = new FileOutputStream(new java.io.File(fileName))) {
-            out.write("* Ostatnie wysłane komunikaty *".getBytes());
-            out.write(System.getProperty("line.separator").getBytes());
-            out.write(System.getProperty("line.separator").getBytes());
-            out.write("* System AES".getBytes());
-            out.write(System.getProperty("line.separator").getBytes());
-            out.write(System.getProperty("line.separator").getBytes());
-            out.write("Ilosc    Komunikat ".getBytes());
-            out.write(System.getProperty("line.separator").getBytes());
-            out.write("-----   -----------".getBytes());
-            out.write(System.getProperty("line.separator").getBytes());
+            for (Message message : content) {
+                MessageFormatter formatter = new MessageFormatter(message.getSizes());
 
-            Message message = content.get(0);
-
-            for (Message.Row row : message.getRows()) {
-                String formattedRow = new MessageFormatter(row).format();
-
-                out.write(formattedRow.getBytes());
+                out.write(message.getHeader().getBytes());
                 out.write(System.getProperty("line.separator").getBytes());
-            }
-
-            out.write(System.getProperty("line.separator").getBytes());
-            out.write(System.getProperty("line.separator").getBytes());
-            out.write("doc_time                     xml_name".getBytes());
-            out.write(System.getProperty("line.separator").getBytes());
-            out.write("--------                     --------".getBytes());
-            out.write(System.getProperty("line.separator").getBytes());
-
-            message = content.get(1);
-
-            for (Message.Row row : message.getRows()) {
-                String formattedRow = new MessageFormatter(row).format();
-
-                out.write(formattedRow.getBytes());
                 out.write(System.getProperty("line.separator").getBytes());
-            }
 
-            out.write(System.getProperty("line.separator").getBytes());
-            out.write(System.getProperty("line.separator").getBytes());
-            out.write("* System AIS".getBytes());
-            out.write(System.getProperty("line.separator").getBytes());
-            out.write(System.getProperty("line.separator").getBytes());
-            out.write("Ilosc    Komunikat ".getBytes());
-            out.write(System.getProperty("line.separator").getBytes());
-            out.write("-----   -----------".getBytes());
-            out.write(System.getProperty("line.separator").getBytes());
-
-            message = content.get(2);
-
-            for (Message.Row row : message.getRows()) {
-                String formattedRow = new MessageFormatter(row).format();
-
-                out.write(formattedRow.getBytes());
+                out.write(formatter.format(message.getLabels()).getBytes());
                 out.write(System.getProperty("line.separator").getBytes());
-            }
 
-            out.write(System.getProperty("line.separator").getBytes());
-            out.write(System.getProperty("line.separator").getBytes());
-            out.write("doc_time                     xml_name".getBytes());
-            out.write(System.getProperty("line.separator").getBytes());
-            out.write("--------                     --------".getBytes());
-            out.write(System.getProperty("line.separator").getBytes());
+                out.write("----------------".getBytes());
+                out.write(System.getProperty("line.separator").getBytes());
 
-            message = content.get(3);
+                for (String[] row : message.getRows()) {
+                    out.write(formatter.format(row).getBytes());
+                    out.write(System.getProperty("line.separator").getBytes());
+                }
 
-            for (Message.Row row : message.getRows()) {
-                String formattedRow = new MessageFormatter(row).format();
-
-                out.write(formattedRow.getBytes());
+                out.write(System.getProperty("line.separator").getBytes());
                 out.write(System.getProperty("line.separator").getBytes());
             }
         } catch (Exception e) {

@@ -4,39 +4,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Message {
-    private List<Row> rows = new ArrayList<>();
+    private String header = null;
+    private int[] sizes = null;
+    private String[] labels = null;
+    private List<String[]> rows = new ArrayList<>();
 
-    public void addRow(Row row) {
-        rows.add(row);
+    public String getHeader() {
+        return header;
     }
 
-    public List<Row> getRows() {
+    public void setHeader(String header) {
+        this.header = header;
+    }
+
+    public int[] getSizes() {
+        return sizes;
+    }
+
+    public void setSizes(int[] sizes) {
+        this.sizes = sizes;
+    }
+
+    public String[] getLabels() {
+        return labels;
+    }
+
+    public void setLabels(String[] labels) {
+        this.labels = labels;
+    }
+
+    public List<String[]> getRows() {
         return rows;
     }
 
-    class Row {
-        private String count;
-        private String xmlName;
-
-        public Row(String count, String xmlName) {
-            this.count = count;
-            this.xmlName = xmlName;
-        }
-
-        public String getXmlName() {
-            return xmlName;
-        }
-
-        public void setXmlName(String xmlName) {
-            this.xmlName = xmlName;
-        }
-
-        public String getCount() {
-            return count;
-        }
-
-        public void setCount(String count) {
-            this.count = count;
-        }
+    public void setRows(List<String[]> rows) {
+        this.rows = rows;
     }
 }
