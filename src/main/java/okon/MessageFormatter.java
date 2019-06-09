@@ -9,7 +9,7 @@ public class MessageFormatter {
 
     private void setFormat(int[] sizes) {
         for (int i = 0; i < sizes.length; i++) {
-            format.append("%-" + sizes[i] + "s ");
+            format.append("%-" + Integer.sum(sizes[i], 2) + "s ");
         }
     }
 

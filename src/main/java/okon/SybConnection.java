@@ -41,11 +41,11 @@ public class SybConnection implements Closeable {
         String[] queries = {sql1, sql2, sql3, sql4};
 
         for (int i = 0; i < queries.length; i++) {
-            try(Statement query = connection.createStatement(); ResultSet rs = query.executeQuery(queries[i]);) {
+            try(Statement query = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE); ResultSet rs = query.executeQuery(queries[i]);) {
                 Message message = new Message();
 
                 message.setHeader(headers[i]);
-                message.setSizes(getColumnDisplaySizes(rs.getMetaData()));
+                message.setSizes(getColumnDisplaySizes(rs));
                 message.setLabels(getColumnLabels(rs.getMetaData()));
                 message.setRows(getDataRows(rs));
 
@@ -58,14 +58,29 @@ public class SybConnection implements Closeable {
         return messages;
     }
 
-    private int[] getColumnDisplaySizes(ResultSetMetaData rsmd) {
+    private int[] getColumnDisplaySizes(ResultSet rs) {
         int[] sizes = null;
 
         try {
-            sizes = new int[rsmd.getColumnCount()];
+            sizes = new int[rs.getMetaData().getColumnCount()];
 
-            for(int i = 1; i <= rsmd.getColumnCount(); i++) {
-                sizes[i - 1] = rsmd.getColumnDisplaySize(i);
+            for(int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                sizes[i - 1] = rs.getMetaData().getColumnName(i).length();
+            }
+
+            rs.beforeFirst();
+            while (rs.next()) {
+                for(int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                    if (rs.getString(i) != null) {
+                        if (rs.getString(i).length() > sizes[i - 1]) {
+                            sizes[i - 1] = rs.getString(i).length();
+                        }
+                    } else {
+                        if (sizes[i - 1] < 4) {
+                            sizes[i - 1] = 4;
+                        }
+                    }
+                }
             }
         } catch (SQLException e) {
             throw new AppException(e);
@@ -96,6 +111,7 @@ public class SybConnection implements Closeable {
         try {
             int columnCount = rs.getMetaData().getColumnCount();
 
+            rs.beforeFirst();
             while (rs.next()) {
                 String[] row = new String[columnCount];
 

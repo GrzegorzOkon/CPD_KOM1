@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
 
@@ -65,7 +66,9 @@ public class CPD_KOM1App {
                 out.write(formatter.format(message.getLabels()).getBytes());
                 out.write(System.getProperty("line.separator").getBytes());
 
-                out.write("----------------".getBytes());
+                Arrays.fill(message.getLabels(), "---");
+
+                out.write(formatter.format(message.getLabels()).getBytes());
                 out.write(System.getProperty("line.separator").getBytes());
 
                 for (String[] row : message.getRows()) {
