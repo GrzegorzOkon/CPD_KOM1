@@ -7,12 +7,13 @@ import org.w3c.dom.NodeList;
 
 import javax.sql.DataSource;
 import javax.xml.bind.DatatypeConverter;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class DataSourceBuilder {
-    public Queue<DataSource> build(Element root) {
-        Queue<DataSource> dataSources = new LinkedList<>();
+public class JobBuilder {
+    public Queue<Job> build(Element root) {
+        Queue<Job> jobs = new LinkedList<>();
         NodeList children = root.getElementsByTagName("server");
 
         if (children != null && children.getLength() > 0) {
@@ -27,12 +28,20 @@ public class DataSourceBuilder {
                     String dbUser = element.getElementsByTagName("db_user").item(0).getTextContent();
                     String dbPassword = element.getElementsByTagName("db_pswd").item(0).getTextContent();
 
-                    dataSources.add(createDataSource(dbIp, dbPort, fromHex(dbUser), fromHex(dbPassword)));
+                    ArrayList<String> dbSqls = new ArrayList();
+                    for (i = 0; i < element.getElementsByTagName("db_query").getLength(); i++) {
+                        dbSqls.add(element.getElementsByTagName("db_query").item(i).getTextContent());
+                    }
+
+                    Job job = new Job();
+                    job.setDataSource(createDataSource(dbIp, dbPort, fromHex(dbUser), fromHex(dbPassword)));
+                    job.setQueries(dbSqls);
+                    jobs.add(job);
                 }
             }
         }
 
-        return dataSources;
+        return jobs;
     }
 
     public String fromHex(String hex) {

@@ -3,7 +3,7 @@ package okon;
 import javax.sql.DataSource;
 
 public class ConnectionFactory {
-    public SybConnection build(DataSource dataSource) {
-        return new SybConnection(dataSource);
+    public SybConnection build(Job job) {
+        return new SybConnection(job);
     }
 }

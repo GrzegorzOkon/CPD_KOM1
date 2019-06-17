@@ -2,7 +2,6 @@ package okon;
 
 import org.w3c.dom.Element;
 
-import javax.sql.DataSource;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -12,26 +11,26 @@ import java.util.Queue;
 
 public class CPD_KOM1App {
     static final ConnectionFactory connectionFactory = new ConnectionFactory();
-    static Queue<DataSource> dataSourceQueue;
+    static Queue<Job> jobQueue;
     static final List<Message> messageList = new ArrayList();
 
-    private final DataSourceBuilder dataSourceBuilder = new DataSourceBuilder();
+    private final JobBuilder taskBuilder = new JobBuilder();
 
     public static void main (String args[]) {
         CPD_KOM1App cpd_kom1_app = new CPD_KOM1App();
 
-        dataSourceQueue = cpd_kom1_app.loadConfiguration("./settings/config.xml");
+        jobQueue = cpd_kom1_app.loadConfiguration("./settings/config.xml");
 
-        cpd_kom1_app.startThreadPool(dataSourceQueue.size());
+        cpd_kom1_app.startThreadPool(jobQueue.size());
 
         cpd_kom1_app.save("CPD_KOM1.txt", messageList);
     }
 
-    private Queue<DataSource> loadConfiguration(String pathname) {
+    private Queue<Job> loadConfiguration(String pathname) {
         ConfigurationParser parser = new ConfigurationParser();
         Element root = parser.parseXml(new File(pathname));
 
-        return dataSourceBuilder.build(root);
+        return taskBuilder.build(root);
     }
 
     private void startThreadPool(int threadSum) {

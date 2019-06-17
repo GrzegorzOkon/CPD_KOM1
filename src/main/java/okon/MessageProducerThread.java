@@ -1,23 +1,19 @@
 package okon;
 
-import javax.sql.DataSource;
-
 import java.util.List;
 
-import static okon.CPD_KOM1App.connectionFactory;
-import static okon.CPD_KOM1App.dataSourceQueue;
-import static okon.CPD_KOM1App.messageList;
+import static okon.CPD_KOM1App.*;
 
 public class MessageProducerThread extends Thread {
 
     @Override
     public void run() {
-        while (!dataSourceQueue.isEmpty()) {
-            DataSource job = null;
+        while (!jobQueue.isEmpty()) {
+            Job job = null;
 
-            synchronized (dataSourceQueue) {
-                if (!dataSourceQueue.isEmpty()) {
-                    job = dataSourceQueue.poll();
+            synchronized (jobQueue) {
+                if (!jobQueue.isEmpty()) {
+                    job = jobQueue.poll();
                 }
             }
 
@@ -32,10 +28,10 @@ public class MessageProducerThread extends Thread {
         }
     }
 
-    public List<Message> execute(DataSource dataSource) {
+    public List<Message> execute(Job job) {
         List<Message> message = null;
 
-        try (SybConnection connection = connectionFactory.build(dataSource)) {
+        try (SybConnection connection = connectionFactory.build(job)) {
             message = connection.execute();
         } catch (Exception e) {
             throw new AppException(e);
