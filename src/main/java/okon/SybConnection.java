@@ -8,11 +8,13 @@ import java.util.List;
 public class SybConnection implements Closeable {
     private final Connection connection;
     private final List<String> queries;
+    private final List<String> headers;
 
     public SybConnection(Job job) {
         try {
             connection = job.getDataSource().getConnection();
             queries = job.getQueries();
+            headers = job.getHeaders();
         } catch (SQLException e) {
             throw new AppException(e);
         }
@@ -21,18 +23,11 @@ public class SybConnection implements Closeable {
     public List<Message> execute() {
         List<Message> messages = new ArrayList<>();
 
-        String headline1 = "* System AES. Pogrupowane komunikaty z ostatniej godziny";
-        String headline2 = "* System AES. Ostatnio wysłane dokumenty";
-        String headline3 = "* System AIS. Pogrupowane komunikaty z ostatniej godziny";
-        String headline4 = "* System AIS. Ostatnio wysłane dokumenty";
-
-        String headers[] = {headline1, headline2, headline3, headline4};
-
         for (int i = 0; i < queries.size(); i++) {
             try(Statement query = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE); ResultSet rs = query.executeQuery(queries.get(i));) {
                 Message message = new Message();
 
-                message.setHeader(headers[i]);
+                message.setHeader(headers.get(i));
                 message.setSizes(getColumnDisplaySizes(rs));
                 message.setLabels(getColumnLabels(rs.getMetaData()));
                 message.setRows(getDataRows(rs));
