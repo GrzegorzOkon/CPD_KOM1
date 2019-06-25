@@ -23,7 +23,7 @@ public class CPD_KOM1App {
 
         cpd_kom1_app.startThreadPool(jobQueue.size());
 
-        cpd_kom1_app.save(cpd_kom1_app.getJarFileName(), messageList);
+        cpd_kom1_app.save(cpd_kom1_app.getJarFileName() + ".txt", messageList);
     }
 
     private Queue<Job> loadConfiguration(String pathname) {
@@ -58,7 +58,7 @@ public class CPD_KOM1App {
         path = path.substring(0, path.lastIndexOf('!'));
         path = path.substring(path.lastIndexOf("/") + 1, path.lastIndexOf('.'));
 
-        return path + ".txt";
+        return path;
     }
 
     public void save(String fileName, List<Message> content) {
