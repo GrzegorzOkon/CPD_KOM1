@@ -1,0 +1,1 @@
+isql -U **** -P **** -D **** -S **** -w 200 -i zapytanie_aisdb.sql
