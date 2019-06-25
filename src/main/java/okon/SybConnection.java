@@ -79,7 +79,7 @@ public class SybConnection implements Closeable {
             labels = new String[rsmd.getColumnCount()];
 
             for(int i = 1; i <= rsmd.getColumnCount(); i++) {
-                labels[i - 1] = rsmd.getColumnName(i);
+                labels[i - 1] = rsmd.getColumnLabel(i);
             }
         } catch (SQLException e) {
             throw new AppException(e);
