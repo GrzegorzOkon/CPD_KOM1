@@ -17,13 +17,9 @@ public class Message {
         this.header = header;
     }
 
-    public int[] getSizes() {
-        return sizes;
-    }
+    public int[] getSizes() { return sizes; }
 
-    public void setSizes(int[] sizes) {
-        this.sizes = sizes;
-    }
+    public void setSizes(int[] sizes) { this.sizes = sizes; }
 
     public String[] getLabels() {
         return labels;

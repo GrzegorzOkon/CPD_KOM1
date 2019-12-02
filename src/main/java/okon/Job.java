@@ -1,28 +1,36 @@
 package okon;
 
-import javax.sql.DataSource;
 import java.util.List;
 
 public class Job {
-    private DataSource dataSource;
+    private String ip;
+    private Integer port;
+    private String user;
+    private String password;
     private List<String> queries;
     private List<String> headers;
 
-    public DataSource getDataSource() {
-        return dataSource;
-    }
+    public String getIp() { return ip; }
 
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+    public void setIp(String ip) { this.ip = ip; }
+
+    public Integer getPort() { return port; }
+
+    public void setPort(Integer port) { this.port = port; }
+
+    public String getUser() { return user; }
+
+    public void setUser(String user) { this.user = user; }
+
+    public String getPassword() { return password; }
+
+    public void setPassword(String password) { this.password = password; }
 
     public List<String> getQueries() {
         return queries;
     }
 
-    public void setQueries(List<String> queries) {
-        this.queries = queries;
-    }
+    public void setQueries(List<String> queries) { this.queries = queries; }
 
     public List<String> getHeaders() {
         return headers;

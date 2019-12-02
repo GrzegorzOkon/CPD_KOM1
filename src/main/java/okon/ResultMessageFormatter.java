@@ -1,9 +1,9 @@
 package okon;
 
-public class MessageFormatter {
+public class ResultMessageFormatter {
     private final StringBuilder format = new StringBuilder();
 
-    public MessageFormatter(int[] sizes) {
+    public ResultMessageFormatter(int[] sizes) {
         setFormat(sizes);
     }
 
