@@ -27,9 +27,9 @@ public class ConfigurationParamsReader {
                 Node child = children.item(i);
                 if (child.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) child;
-                    Job job = new Job();
                     List<String> headers = new ArrayList<>();
                     List<String> queries = new ArrayList<>();
+                    String dbVendor = element.getElementsByTagName("db_vendor").item(0).getTextContent();
                     String dbIp = element.getElementsByTagName("db_ip").item(0).getTextContent();
                     Integer dbPort = Integer.valueOf(element.getElementsByTagName("db_port").item(0).getTextContent());
                     String dbUser = element.getElementsByTagName("db_user").item(0).getTextContent();
@@ -40,12 +40,7 @@ public class ConfigurationParamsReader {
                     for (int k = 0; k < element.getElementsByTagName("db_query").getLength(); k++) {
                         queries.add(element.getElementsByTagName("db_query").item(k).getTextContent());
                     }
-                    job.setIp(dbIp);
-                    job.setPort(dbPort);
-                    job.setUser(fromHex(dbUser));
-                    job.setPassword(fromHex(dbPassword));
-                    job.setHeaders(headers);
-                    job.setQueries(queries);
+                    Job job = new Job(dbVendor, dbIp, dbPort, fromHex(dbUser), fromHex(dbPassword), queries, headers);
                     jobs.add(job);
                 }
             }

@@ -5,21 +5,16 @@ import okon.exception.AppException;
 import okon.exception.ConnectionException;
 
 import javax.sql.DataSource;
-import java.io.Closeable;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SybConnection implements Closeable {
+public class GatewaySybase implements Gateway {
     private final Connection connection;
-    private final List<String> queries;
-    private final List<String> headers;
 
-    public SybConnection(Job job) {
+    public GatewaySybase(Job job) {
         try {
             connection = createDataSource(job.getIp(), job.getPort(), job.getUser(), job.getPassword()).getConnection();
-            queries = job.getQueries();
-            headers = job.getHeaders();
         } catch (SQLException e) {
             throw new ConnectionException(e);
         }
@@ -34,7 +29,7 @@ public class SybConnection implements Closeable {
         return dataSource;
     }
 
-    public List<Message> execute() {
+    public List<Message> execute(List<String> queries, List<String> headers) {
         List<Message> messages = new ArrayList<>();
         for (int i = 0; i < queries.size(); i++) {
             try(Statement query = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE); ResultSet rs = query.executeQuery(queries.get(i));) {
@@ -45,7 +40,7 @@ public class SybConnection implements Closeable {
                 message.setRows(getDataRows(rs));
                 messages.add(message);
             } catch (SQLException e) {
-                throw new AppException(e);
+                throw new ConnectionException(e.getMessage());
             }
         }
         return messages;
@@ -53,7 +48,6 @@ public class SybConnection implements Closeable {
 
     private int[] getColumnDisplaySizes(ResultSet rs) {
         int[] sizes = null;
-
         try {
             sizes = new int[rs.getMetaData().getColumnCount()];
             for(int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
@@ -83,7 +77,6 @@ public class SybConnection implements Closeable {
         String[] labels = null;
         try {
             labels = new String[rsmd.getColumnCount()];
-
             for(int i = 1; i <= rsmd.getColumnCount(); i++) {
                 labels[i - 1] = rsmd.getColumnLabel(i);
             }
@@ -112,11 +105,7 @@ public class SybConnection implements Closeable {
     }
 
     @Override
-    public void close() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            throw new AppException(e);
-        }
+    public void close() throws Exception {
+        connection.close();
     }
 }

@@ -3,6 +3,7 @@ package okon;
 import java.util.List;
 
 public class Job {
+    private String vendor;
     private String ip;
     private Integer port;
     private String user;
@@ -10,33 +11,41 @@ public class Job {
     private List<String> queries;
     private List<String> headers;
 
-    public String getIp() { return ip; }
+    public Job(String vendor, String ip, Integer port, String user, String password, List<String> queries, List<String> headers) {
+        this.vendor = vendor;
+        this.ip = ip;
+        this.port = port;
+        this.user = user;
+        this.password = password;
+        this.queries = queries;
+        this.headers = headers;
+    }
 
-    public void setIp(String ip) { this.ip = ip; }
+    public String getVendor() {
+        return vendor;
+    }
 
-    public Integer getPort() { return port; }
+    public String getIp() {
+        return ip;
+    }
 
-    public void setPort(Integer port) { this.port = port; }
+    public Integer getPort() {
+        return port;
+    }
 
-    public String getUser() { return user; }
+    public String getUser() {
+        return user;
+    }
 
-    public void setUser(String user) { this.user = user; }
-
-    public String getPassword() { return password; }
-
-    public void setPassword(String password) { this.password = password; }
+    public String getPassword() {
+        return password;
+    }
 
     public List<String> getQueries() {
         return queries;
     }
 
-    public void setQueries(List<String> queries) { this.queries = queries; }
-
     public List<String> getHeaders() {
         return headers;
-    }
-
-    public void setHeaders(List<String> headers) {
-        this.headers = headers;
     }
 }

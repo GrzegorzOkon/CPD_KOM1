@@ -13,6 +13,7 @@ repositories {
 
 dependencies {
     compile files('C:\\Users\\grzeg\\IdeaProjects\\CPD_KOM1\\lib\\jconn4.jar')
+    compile files('C:\\Users\\grzeg\\IdeaProjects\\CPD_KOM1\\lib\\sqljdbc4-2.0.jar')
     compile group: 'org.w3c', name: 'dom', version: '2.3.0-jaxb-1.0.6'
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
@@ -35,4 +36,5 @@ jar {
     doFirst {
         from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
     }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
 }

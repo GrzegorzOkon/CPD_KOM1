@@ -12,7 +12,6 @@ import java.util.Queue;
 public class CPD_KOM1App {
     static boolean CONSOLE = false;
     static boolean FILE = true;
-    static final ConnectionFactory connectionFactory = new ConnectionFactory();
     static Queue<Job> jobQueue;
     static final List<Message> messageList = new ArrayList();
 
