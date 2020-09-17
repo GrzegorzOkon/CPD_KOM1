@@ -2,12 +2,12 @@ package okon.config;
 
 import okon.Job;
 import okon.exception.AppException;
+import okon.security.HexDecryptor;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
@@ -40,7 +40,7 @@ public class ConfigurationParamsReader {
                     for (int k = 0; k < element.getElementsByTagName("db_query").getLength(); k++) {
                         queries.add(element.getElementsByTagName("db_query").item(k).getTextContent());
                     }
-                    Job job = new Job(dbVendor, dbIp, dbPort, fromHex(dbUser), fromHex(dbPassword), queries, headers);
+                    Job job = new Job(dbVendor, dbIp, dbPort, HexDecryptor.convert(dbUser), HexDecryptor.convert(dbPassword), queries, headers);
                     jobs.add(job);
                 }
             }
@@ -57,10 +57,5 @@ public class ConfigurationParamsReader {
         } catch (Exception e) {
             throw new AppException(e);
         }
-    }
-
-    private static String fromHex(String hex) {
-        byte[] bytes = DatatypeConverter.parseHexBinary(hex);
-        return new String(bytes);
     }
 }
