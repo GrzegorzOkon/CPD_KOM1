@@ -1,7 +1,7 @@
 package okon.config;
 
 import okon.Job;
-import okon.exception.AppException;
+import okon.exception.ConfigurationException;
 import okon.security.HexDecryptor;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -21,7 +21,6 @@ public class ConfigurationParamsReader {
         Element root = parseXml(file);
         Queue<Job> jobs = new LinkedList<>();
         NodeList children = root.getElementsByTagName("server");
-
         if (children != null && children.getLength() > 0) {
             for (int i = 0; i < children.getLength(); i++) {
                 Node child = children.item(i);
@@ -55,7 +54,7 @@ public class ConfigurationParamsReader {
             Document document = docBuilder.parse(file);
             return document.getDocumentElement();
         } catch (Exception e) {
-            throw new AppException(e);
+            throw new ConfigurationException(e.getMessage());
         }
     }
 }
