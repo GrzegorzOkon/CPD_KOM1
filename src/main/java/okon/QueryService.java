@@ -13,12 +13,12 @@ public class QueryService {
         this.db = db;
     }
 
-    public List<Message> execute(Job job) {
-        List<Message> messages = new ArrayList<>();
+    public List<Report> execute(Job job) {
+        List<Report> messages = new ArrayList<>();
         try {
             messages = db.execute(job.getQueries(), job.getHeaders());
         } catch (ConnectionException e) {
-            Message message = new ExceptionMessage();
+            Report message = new ExceptionMessage();
             message.setHeader("" + "Blad polaczenia z baza danych " + job.getIp());
             messages.add(message);
         } catch (Exception e) {

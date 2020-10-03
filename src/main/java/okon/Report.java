@@ -3,7 +3,7 @@ package okon;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Message {
+public class Report {
     private String header = null;
     private int[] sizes = null;
     private String[] labels = null;

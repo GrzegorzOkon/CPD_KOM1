@@ -4,7 +4,7 @@ import java.util.List;
 
 import static okon.CPD_KOM1App.*;
 
-public class MessageProducerThread extends Thread {
+public class ReportProducerThread extends Thread {
     @Override
     public void run() {
         while (!jobQueue.isEmpty()) {
@@ -15,9 +15,9 @@ public class MessageProducerThread extends Thread {
                 }
             }
             if (job != null) {
-                List<Message> messages = new QueryService(GatewayFactory.make(job)).execute(job);
+                List<Report> messages = new QueryService(GatewayFactory.make(job)).execute(job);
                 synchronized (messageList) {
-                    for (Message message : messages)
+                    for (Report message : messages)
                         messageList.add(message);
                 }
             }

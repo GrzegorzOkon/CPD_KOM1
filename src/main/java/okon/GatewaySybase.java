@@ -29,11 +29,11 @@ public class GatewaySybase implements Gateway {
         return dataSource;
     }
 
-    public List<Message> execute(List<String> queries, List<String> headers) {
-        List<Message> messages = new ArrayList<>();
+    public List<Report> execute(List<String> queries, List<String> headers) {
+        List<Report> messages = new ArrayList<>();
         for (int i = 0; i < queries.size(); i++) {
             try(Statement query = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE); ResultSet rs = query.executeQuery(queries.get(i));) {
-                Message message = new ResultMessage();
+                Report message = new ReportContent();
                 message.setHeader(headers.get(i));
                 message.setSizes(getColumnDisplaySizes(rs));
                 message.setLabels(getColumnLabels(rs.getMetaData()));

@@ -1,4 +1,4 @@
 package okon;
 
-public class ExceptionMessage extends Message {
+public class ExceptionMessage extends Report {
 }
